@@ -49,7 +49,7 @@ const App = () => {
   }, [dispatch]);
   return (
     <Router>
-      <div className="app-container aaaa">
+      <div className="app-container">
         <HeaderBar />
         <Switch>
           <Route exact path="/">
