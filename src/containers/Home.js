@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Spin } from "antd";
+import { List } from "antd";
 import { MovieItem } from "../components";
 import request from "../services/request";
 import { useAuthenActions } from "../shared";
 
+const { Item } = List;
 const Home = () => {
   const { isSignIn, userData } = useAuthenActions();
   const [moviesList, setMoviesList] = useState([]);
@@ -53,16 +54,19 @@ const Home = () => {
   }, [getMoviesList, isSignIn, fetchDataTurn]);
   return (
     <div className="home-container">
-      <Spin spinning={loading}>
-        {moviesList.map((movie) => (
-          <MovieItem
-            {...movie}
-            onUpVoteMovie={onUpVoteMovie}
-            onDownVoteMovie={onDownVoteMovie}
-            key={movie._id}
-          />
-        ))}
-      </Spin>
+      <List
+        loading={loading}
+        dataSource={moviesList}
+        renderItem={(movie) => (
+          <Item>
+            <MovieItem
+              {...movie}
+              onUpVoteMovie={onUpVoteMovie}
+              onDownVoteMovie={onDownVoteMovie}
+            />
+          </Item>
+        )}
+      />
     </div>
   );
 };

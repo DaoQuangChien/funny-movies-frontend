@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 
 const PostMovie = ({ history }) => {
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const onUrlChange = (e) => setYoutubeUrl(e.currentTarget.value);
   const onPostMovie = () => {
     let videoId;
@@ -13,6 +14,7 @@ const PostMovie = ({ history }) => {
       .replace(/(>|<)/gi, "")
       .split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
 
+    setLoading(true);
     if (url[2] !== undefined) {
       videoId = url[2].split(/[^0-9a-z_-]/i);
       videoId = videoId[0];
@@ -45,7 +47,8 @@ const PostMovie = ({ history }) => {
           message: "Request Error",
           description: "Something went wrong!",
         });
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <Card title="Share a Youtube Movie" style={{ width: 600, margin: "auto" }}>
@@ -59,7 +62,7 @@ const PostMovie = ({ history }) => {
           />
         </Col>
         <Col offset={4}>
-          <Button type="primary" onClick={onPostMovie}>
+          <Button type="primary" loading={loading} onClick={onPostMovie}>
             Share
           </Button>
         </Col>
